@@ -2,10 +2,9 @@ package main
 
 import (
 	"fmt"
-	grm "go-redis-model"
 	"time"
 
-	"github.com/redis/go-redis/v9"
+	"github.com/go-redis-model/grm"
 )
 
 type User struct {
@@ -21,7 +20,7 @@ type User struct {
 
 func main() {
 	// 连接 Redis
-	config := &redis.Options{
+	config := &grm.Options{
 		Addr:     "localhost:6379",
 		Password: "",
 		DB:       0,

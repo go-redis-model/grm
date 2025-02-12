@@ -12,7 +12,13 @@ import (
 )
 
 type Options struct {
-	redis.Options
+	// 精简字段（常用配置）
+	Addr     string // 覆盖 redis.Options 的同名字段
+	Password string // 覆盖 redis.Options 的同名字段
+	DB       int    // 覆盖 redis.Options 的同名字段
+
+	// 嵌入完整的 Redis 配置（支持高级配置）
+	RedisOptions redis.Options
 }
 
 type DB struct {
@@ -20,9 +26,19 @@ type DB struct {
 }
 
 // Open 连接 Redis，返回 GRM 的 DB 实例
-func Open(config *redis.Options) (*DB, error) {
-	client := redis.NewClient(config)
-	// 测试连接
+func Open(config *Options) (*DB, error) {
+	// 如果精简字段有值，覆盖 RedisOptions 的对应字段
+	if config.Addr != "" {
+		config.RedisOptions.Addr = config.Addr
+	}
+	if config.Password != "" {
+		config.RedisOptions.Password = config.Password
+	}
+	if config.DB != 0 {
+		config.RedisOptions.DB = config.DB
+	}
+
+	client := redis.NewClient(&config.RedisOptions)
 	if err := client.Ping(context.Background()).Err(); err != nil {
 		return nil, err
 	}

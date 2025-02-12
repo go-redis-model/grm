@@ -1,4 +1,4 @@
-module go-redis-model
+module github.com/go-redis-model/grm
 
 go 1.23.6
 
