@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"reflect"
-	"strings"
 	"time"
 
+	"github.com/kenshaw/snaker"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -105,7 +105,7 @@ func getKey(model interface{}) (string, error) {
 	structName := t.Name()
 
 	// 转换为 snake_case 并复数化（如 "users"）
-	prefix := pluralize(toSnakeCase(structName))
+	prefix := snaker.CamelToSnake(structName) + "s"
 
 	// 提取 ID 字段的值
 	v := reflect.ValueOf(model).Elem()
@@ -116,17 +116,6 @@ func getKey(model interface{}) (string, error) {
 	id := fmt.Sprintf("%v", idField.Interface())
 
 	return fmt.Sprintf("grm:%s:%s", prefix, id), nil
-}
-
-// 辅助函数：转换为 snake_case
-func toSnakeCase(s string) string {
-	// 简化实现，实际需要更复杂的处理（如 "MemberNumber" → "member_number"）
-	return strings.ToLower(s)
-}
-
-// 辅助函数：复数化（简单加 "s"）
-func pluralize(s string) string {
-	return s + "s"
 }
 
 func updateTimestamps(v reflect.Value) {
