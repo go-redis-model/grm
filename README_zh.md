@@ -1,9 +1,9 @@
-
-<p align="center">
-  <a href="https://github.com/go-redis-model/grm/actions?query=workflow%3Aunit-tests"><img alt="go-redis-model/grm unit tests status" src="https://github.com/go-redis-model/grm/workflows/unit-tests/badge.svg"></a>
-</p>
-
 # GRM (go-redis-model) 
+
+[![Tests](https://github.com/go-redis-model/grm/actions/workflows/test.yml/badge.svg)](https://github.com/go-redis-model/grm/actions)[![codecov](https://codecov.io/gh/go-redis-model/grm/branch/main/graph/badge.svg?token=afb57ac7-039f-407c-ba10-921a0e63c385)](https://codecov.io/gh/go-redis-model/grm)
+
+[English](./README.md) | 中文
+
 **基于 Go 的轻量级 Redis 模型层，灵感来自 GORM 风格**
 
 **GRM** 是一个基于 `go-redis` 构建的极简 ORM 风格库，旨在通过 **结构体序列化** 简化 Redis 数据缓存，同时保持零魔法。特别适合需要轻量级模型持久化但不想引入复杂完整 ORM 的场景。
@@ -21,7 +21,7 @@
 package main
 
 import (
-    "github.com/yourusername/grm"
+    "github.com/go-redis-model/grm"
 )
 
 type User struct {
@@ -54,10 +54,10 @@ func main() {
 - 为项目添加轻量级缓存而不引入重型 ORM。
 
 
-## License
+## 🔖 License
 
 Licensed under [MIT License](./LICENSE)
 
-## Contributors
+## 💡 Contributors
 
 See the [list of contributors](https://github.com/go-redis-model/grm/graphs/contributors).

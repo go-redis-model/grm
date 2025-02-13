@@ -1,9 +1,10 @@
-
-<p align="center">
-  <a href="https://github.com/go-redis-model/grm/actions?query=workflow%3Aunit-tests"><img alt="go-redis-model/grm unit tests status" src="https://github.com/go-redis-model/grm/workflows/unit-tests/badge.svg"></a>
-</p>
-
 # GRM (go-redis-model) 
+
+[![Tests](https://github.com/go-redis-model/grm/actions/workflows/test.yml/badge.svg)](https://github.com/go-redis-model/grm/actions)[![codecov](https://codecov.io/gh/go-redis-model/grm/branch/main/graph/badge.svg?token=afb57ac7-039f-407c-ba10-921a0e63c385)](https://codecov.io/gh/go-redis-model/grm)
+
+English | [中文](./README_zh.md)
+
+
 **A Lightweight Redis Model Layer for Go, Inspired by GORM Style**
 
 **GRM** is a minimalist ORM-style library built on top of `go-redis`, designed to simplify Redis data caching with **struct serialization** while keeping the magic to a minimum. Perfect for scenarios where you need lightweight model persistence without the complexity of a full ORM.
@@ -21,7 +22,7 @@
 package main
 
 import (
-    "github.com/yourusername/grm"
+    "github.com/go-redis-model/grm"
 )
 
 type User struct {
@@ -53,10 +54,10 @@ func main() {
 - Replace boilerplate Redis serialization code with struct-driven operations.
 - Add lightweight caching without adopting a heavy ORM.
 
-## License
+## 🔖 License
 
 Licensed under [MIT License](./LICENSE)
 
-## Contributors
+## 💡 Contributors
 
 See the [list of contributors](https://github.com/go-redis-model/grm/graphs/contributors).
