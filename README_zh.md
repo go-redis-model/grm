@@ -39,11 +39,25 @@ func main() {
     user := User{ID: 1, Name: "Alice"}
     db.Set(&user) // Key: "grm:users:1"
 
-    // 读取
+    // 读取（需预填充 ID）
     fetched := User{ID: 1}
     db.Get(&fetched) 
 
     // 删除
+    db.Delete(&fetched)
+
+    // 批量保存用户
+    users := []User{
+        {ID: 1, Name: "Alice"},
+        {ID: 2, Name: "Bob"},
+    }
+    db.Set(&users)
+
+    // 批量读取（需预填充 ID）
+    fetched := []User{{ID: 1}, {ID: 2}}
+    db.Get(&fetched)
+
+    // 批量删除
     db.Delete(&fetched)
 }
 ```

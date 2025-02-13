@@ -1,10 +1,10 @@
 package grm
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/alicebob/miniredis/v2"
-	"github.com/redis/go-redis/v9"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -78,7 +78,39 @@ func TestDelete(t *testing.T) {
 	// 验证用户不存在
 	err = db.Get(&user)
 	assert.Error(t, err) // 应返回 redis.Nil 错误
-	assert.Equal(t, redis.Nil, err)
+	key, _ := getKey(&user)
+	assert.Equal(t, &PartialError{Errors: map[string]error{key: fmt.Errorf("key not found")}}, err)
+}
+
+func TestBatchOperations(t *testing.T) {
+	s := setupTestRedis()
+	defer s.Close()
+
+	config := &Options{Addr: s.Addr()}
+	db, _ := Open(config)
+
+	// 定义批量用户
+	users := []TestUser{
+		{ID: 1, Name: "Alice"},
+		{ID: 2, Name: "Bob"},
+	}
+
+	// 批量保存
+	err := db.Set(&users)
+	assert.NoError(t, err)
+
+	// 批量读取
+	fetched := make([]TestUser, 2)
+	fetched[0].ID = 1
+	fetched[1].ID = 2
+	err = db.Get(&fetched)
+	assert.NoError(t, err)
+	assert.Equal(t, "Alice", fetched[0].Name)
+	assert.Equal(t, "Bob", fetched[1].Name)
+
+	// 批量删除
+	err = db.Delete(&fetched)
+	assert.NoError(t, err)
 }
 
 // 测试 Key 生成逻辑

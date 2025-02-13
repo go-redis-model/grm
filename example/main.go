@@ -50,8 +50,23 @@ func main() {
 	}
 	fmt.Println(fetchedUser.Name) // 输出 "Alice"
 
-	// //删除记录
-	// if err := db.Delete(&fetchedUser); err != nil {
-	// 	panic(err)
-	// }
+	//删除记录
+	if err := db.Delete(&fetchedUser); err != nil {
+		panic(err)
+	}
+
+	// 批量保存用户
+	users := []User{
+		{ID: 1, Name: "Alice"},
+		{ID: 2, Name: "Bob"},
+	}
+	db.Set(&users)
+	fmt.Println(users)
+
+	// 批量读取（需预填充 ID）
+	fetched := []User{{ID: 1}, {ID: 2}}
+	db.Get(&fetched)
+
+	// 批量删除
+	db.Delete(&fetched)
 }
