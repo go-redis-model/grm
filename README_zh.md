@@ -1,6 +1,6 @@
 # GRM (go-redis-model) 
 
-[![tests](https://github.com/go-redis-model/grm/actions/workflows/test.yml/badge.svg)](https://github.com/go-redis-model/grm/actions)[![codecov](https://codecov.io/gh/go-redis-model/grm/branch/main/graph/badge.svg?token=afb57ac7-039f-407c-ba10-921a0e63c385)](https://codecov.io/gh/go-redis-model/grm)[![badge](https://goreportcard.com/badge/github.com/go-redis-model/grm)](https://goreportcard.com/report/github.com/go-redis-model/grm)
+[![tests](https://github.com/go-redis-model/grm/actions/workflows/test.yml/badge.svg)](https://github.com/go-redis-model/grm/actions)[![codecov](https://codecov.io/gh/go-redis-model/grm/branch/main/graph/badge.svg?token=afb57ac7-039f-407c-ba10-921a0e63c385)](https://codecov.io/gh/go-redis-model/grm)[![Go Report Card](https://goreportcard.com/badge/github.com/go-redis-model/grm)](https://goreportcard.com/report/github.com/go-redis-model/grm)
 
 [English](./README.md) | 中文
 
