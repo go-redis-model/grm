@@ -12,16 +12,6 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-type Options struct {
-	// 精简字段（常用配置）
-	Addr     string // 覆盖 redis.Options 的同名字段
-	Password string // 覆盖 redis.Options 的同名字段
-	DB       int    // 覆盖 redis.Options 的同名字段
-
-	// 嵌入完整的 Redis 配置（支持高级配置）
-	RedisOptions redis.Options
-}
-
 type DB struct {
 	client *redis.Client
 }
@@ -46,16 +36,48 @@ func Open(config *Options) (*DB, error) {
 	return &DB{client: client}, nil
 }
 
-func (db *DB) Set(input interface{}) error {
+func (db *DB) Set(input interface{}, opts ...SetOption) error {
+	cfg := &setConfig{}
+	for _, opt := range opts {
+		opt(cfg)
+	}
+
 	elements, err := processBatch(input)
 	if err != nil {
 		return err
 	}
 
-	// 收集键值对（格式: [key1, value1, key2, value2, ...]）
 	ctx := context.Background()
-	keyValues := make([]interface{}, 0, len(elements)*2)
 
+	// 如果有 TTL，使用 Pipeline 逐个设置（因为 MSet 不支持 TTL）
+	if cfg.ttl > 0 {
+		pipe := db.client.Pipeline()
+
+		for _, elem := range elements {
+			model := elem.Addr().Interface()
+			updateTimestamps(elem)
+
+			key, err := getKey(model)
+			if err != nil {
+				return err
+			}
+
+			data, err := json.Marshal(model)
+			if err != nil {
+				return err
+			}
+
+			// 设置带 TTL 的键值
+			pipe.Set(ctx, key, data, cfg.ttl)
+		}
+
+		_, err = pipe.Exec(ctx)
+		return err
+	}
+
+	// 收集键值对（格式: [key1, value1, key2, value2, ...]）
+	keyValues := make([]interface{}, 0, len(elements)*2)
+	// 无 TTL，使用 MSet 批量写入（性能更优）
 	for _, elem := range elements {
 		if elem.Kind() != reflect.Struct {
 			return errors.New("element must be a struct")

@@ -3,6 +3,7 @@ package grm
 import (
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/alicebob/miniredis/v2"
 	"github.com/stretchr/testify/assert"
@@ -58,6 +59,29 @@ func TestSetAndGet(t *testing.T) {
 	err = db.Get(&fetched)
 	assert.NoError(t, err)
 	assert.Equal(t, "Alice", fetched.Name)
+}
+
+func TestSetWithTTL(t *testing.T) {
+	s := setupTestRedis()
+	defer s.Close()
+
+	config := &Options{Addr: s.Addr()}
+	db, _ := Open(config)
+
+	user := TestUser{ID: 1, Name: "Alice"}
+
+	// 设置 TTL 为 1 秒
+	err := db.Set(&user, WithTTL(time.Second))
+	assert.NoError(t, err)
+
+	// 验证 Key 存在
+	err = db.Get(&user)
+	assert.NoError(t, err)
+
+	// 等待 TTL 过期
+	s.FastForward(time.Second) // miniredis 提供的快进时间功能
+	err = db.Get(&user)
+	assert.Error(t, err) // Key 应已过期
 }
 
 // 测试 Delete 操作
