@@ -15,7 +15,7 @@ jobs:
           go-version: '1.23.6'
 
       - name: Run Unit Tests
-        run: go test -v -coverprofile=coverage.out ./...
+        run: go test -v -coverprofile=coverage.out .
 
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v3
