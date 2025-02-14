@@ -62,11 +62,22 @@ func main() {
 }
 ```
 
-## 🔧 适用场景
-- 游戏服务端中缓存玩家状态、排行榜或会话数据。
-- 用结构体驱动操作替代重复的 Redis 序列化代码。
-- 为项目添加轻量级缓存而不引入重型 ORM。
+## 🔄 序列化支持
+GRM 支持自定义序列化，并且内置以下序列化器：
 
+| 协议       | 常量                     | 说明                          |
+|------------|--------------------------|-------------------------------|
+| JSON       | `grm.JSONSerializer`     | 默认，兼容性好                |
+| MessagePack| `grm.MessagePackSerializer` | 高性能二进制格式    |
+| Protobuf   | `grm.ProtobufSerializer` | 需提前生成模型代码            |
+
+### 示例：切换为 MessagePack
+```go
+db, _ := grm.Open(
+    config,
+    grm.WithSerializer(grm.MessagePackSerializer),
+)
+```
 
 ## 🔖 License
 

@@ -62,10 +62,22 @@ func main() {
 }
 ```
 
-## 🔧 When to Use?
-- Cache player states, leaderboards, or session data in game backends.
-- Replace boilerplate Redis serialization code with struct-driven operations.
-- Add lightweight caching without adopting a heavy ORM.
+## 🔄 Serialization Support
+GRM supports custom serialization and includes the following built-in serializers:
+
+| protocol       | Constant                     | Explanation                          |
+|------------|--------------------------|-------------------------------|
+| JSON       | `grm.JSONSerializer`     | By default, it is highly compatible.                |
+| MessagePack| `grm.MessagePackSerializer` | High-performance binary format    |
+| Protobuf   | `grm.ProtobufSerializer` | Please generate the model code in advance.            |
+
+### Example: Switch to MessagePack
+```go
+db, _ := grm.Open(
+    config,
+    grm.WithSerializer(grm.MessagePackSerializer),
+)
+```
 
 ## 🔖 License
 

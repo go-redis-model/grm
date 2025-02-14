@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "github.com/go-redis-model/grm/protobuf/pb";
+
+message User 
+{
+    uint32 ID = 1;
+    string name = 2;
+    string Email = 3;
+    int32 age = 4;
+}

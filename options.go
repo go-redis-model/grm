@@ -17,6 +17,15 @@ type Options struct {
 	RedisOptions redis.Options
 }
 
+// DBOption 是数据库级别的配置选项
+type DBOption func(*DB)
+
+func WithSerializer(s Serializer) DBOption {
+	return func(db *DB) {
+		db.serializer = s
+	}
+}
+
 type SetOption func(*setConfig)
 
 type setConfig struct {

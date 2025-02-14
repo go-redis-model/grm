@@ -2,7 +2,6 @@ package grm
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"reflect"
@@ -13,11 +12,12 @@ import (
 )
 
 type DB struct {
-	client *redis.Client
+	client     *redis.Client
+	serializer Serializer
 }
 
 // Open 连接 Redis，返回 GRM 的 DB 实例
-func Open(config *Options) (*DB, error) {
+func Open(config *Options, opts ...DBOption) (*DB, error) {
 	// 如果精简字段有值，覆盖 RedisOptions 的对应字段
 	if config.Addr != "" {
 		config.RedisOptions.Addr = config.Addr
@@ -33,7 +33,16 @@ func Open(config *Options) (*DB, error) {
 	if err := client.Ping(context.Background()).Err(); err != nil {
 		return nil, err
 	}
-	return &DB{client: client}, nil
+
+	db := &DB{
+		client:     client,
+		serializer: JSONSerializer,
+	}
+
+	for _, opt := range opts {
+		opt(db)
+	}
+	return db, nil
 }
 
 func (db *DB) Set(input interface{}, opts ...SetOption) error {
@@ -62,7 +71,7 @@ func (db *DB) Set(input interface{}, opts ...SetOption) error {
 				return err
 			}
 
-			data, err := json.Marshal(model)
+			data, err := db.serializer.Marshal(model)
 			if err != nil {
 				return err
 			}
@@ -91,7 +100,7 @@ func (db *DB) Set(input interface{}, opts ...SetOption) error {
 			return err
 		}
 
-		data, err := json.Marshal(model)
+		data, err := db.serializer.Marshal(model)
 		if err != nil {
 			return err
 		}
@@ -133,7 +142,7 @@ func (db *DB) Get(input interface{}) error {
 		}
 
 		data := []byte(val.(string))
-		if err := json.Unmarshal(data, elements[i].Addr().Interface()); err != nil {
+		if err := db.serializer.Unmarshal(data, elements[i].Addr().Interface()); err != nil {
 			errors[key] = fmt.Errorf("decode error: %v", err)
 		}
 	}

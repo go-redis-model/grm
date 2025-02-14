@@ -11,7 +11,7 @@ import (
 
 // 定义测试模型
 type TestUser struct {
-	ID   uint
+	ID   uint32
 	Name string
 }
 
@@ -169,7 +169,7 @@ func BenchmarkSet(b *testing.B) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		user := TestUser{ID: uint(i), Name: "BenchUser"}
+		user := TestUser{ID: uint32(i), Name: "BenchUser"}
 		_ = db.Set(&user)
 	}
 }
@@ -201,7 +201,7 @@ func BenchmarkConcurrentSet(b *testing.B) {
 		counter := 0
 		for pb.Next() {
 			counter++
-			user := TestUser{ID: uint(counter), Name: "ConcurrentUser"}
+			user := TestUser{ID: uint32(counter), Name: "ConcurrentUser"}
 			_ = db.Set(&user)
 		}
 	})
