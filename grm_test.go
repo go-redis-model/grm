@@ -59,6 +59,12 @@ func TestSetAndGet(t *testing.T) {
 	err = db.Get(&fetched)
 	assert.NoError(t, err)
 	assert.Equal(t, "Alice", fetched.Name)
+
+	// 读取不存在用户
+	fetched.ID = 2
+	err = db.Get(&fetched)
+	assert.Error(t, err)
+	assert.Equal(t, "partial error (1 failures)", err.Error())
 }
 
 func TestSetWithTTL(t *testing.T) {
