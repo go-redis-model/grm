@@ -12,6 +12,7 @@ English | [中文](./README_zh.md)
 - **Auto Key Management**: Generates Redis keys using struct names (snake_case pluralized) and `ID` field.  
   Example: `User` struct → `grm:users:15`
 - **Timestamp Automation**: Auto-populates `CreatedAt` and `UpdatedAt` fields.
+- **Custom Serialization**: Supports custom serialization and has built-in serialization for JSON, MessagePack, and Protobuf.
 - **CRUD Simplicity**: Intuitive `Set`, `Get`, and `Delete` operations for models.
 - **Decoupled Config**: Use simplified options or extend with native `redis.Options` for advanced needs.
 - **Battle-Tested**: Full unit and benchmark tests ensure reliability and performance.
@@ -78,6 +79,7 @@ db, _ := grm.Open(
     grm.WithSerializer(grm.MessagePackSerializer),
 )
 ```
+Switching to Protobuf requires generating model code in advance. Please refer to the example in `examples/protobuf` for details.
 
 ## 🔖 License
 

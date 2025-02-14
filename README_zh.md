@@ -12,6 +12,7 @@
 - **自动 Key 管理**: 使用结构体名称（复数形式 + snake_case）和 `ID` 字段生成 Redis Key。  
   示例：`User` 结构体 → `grm:users:15`
 - **时间戳自动化**: 自动维护 `CreatedAt` 和 `UpdatedAt` 字段。
+- **自定义序列化**: 支持自定义序列化，并且内置JSON、MessagePack、Protobuf序列化。
 - **CRUD 简化**: 直观的 `Set`、`Get` 和 `Delete` 操作方法。
 - **解耦配置**: 支持精简配置或直接使用原生 `redis.Options` 满足高级需求。
 - **严格测试**: 完整的单元测试和性能测试保障可靠性。
@@ -78,6 +79,7 @@ db, _ := grm.Open(
     grm.WithSerializer(grm.MessagePackSerializer),
 )
 ```
+切换为 protobuf 需要提前生成模型代码，具体请参考 `examples/protobuf` 示例。
 
 ## 🔖 License
 
