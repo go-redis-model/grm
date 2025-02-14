@@ -72,6 +72,8 @@ GRM supports custom serialization and includes the following built-in serializer
 | MessagePack| `grm.MessagePackSerializer` | High-performance binary format    |
 | Protobuf   | `grm.ProtobufSerializer` | Please generate the model code in advance.            |
 
+Switching to Protobuf requires generating model code in advance. Please refer to the example in `examples/protobuf` for details.
+
 ### Example: Switch to MessagePack
 ```go
 db, _ := grm.Open(
@@ -79,7 +81,6 @@ db, _ := grm.Open(
     grm.WithSerializer(grm.MessagePackSerializer),
 )
 ```
-Switching to Protobuf requires generating model code in advance. Please refer to the example in `examples/protobuf` for details.
 
 ## 🔖 License
 

@@ -72,6 +72,8 @@ GRM 支持自定义序列化，并且内置以下序列化器：
 | MessagePack| `grm.MessagePackSerializer` | 高性能二进制格式    |
 | Protobuf   | `grm.ProtobufSerializer` | 需提前生成模型代码            |
 
+切换为 protobuf 需要提前生成模型代码，具体请参考 `examples/protobuf` 示例。
+
 ### 示例：切换为 MessagePack
 ```go
 db, _ := grm.Open(
@@ -79,7 +81,6 @@ db, _ := grm.Open(
     grm.WithSerializer(grm.MessagePackSerializer),
 )
 ```
-切换为 protobuf 需要提前生成模型代码，具体请参考 `examples/protobuf` 示例。
 
 ## 🔖 License
 
